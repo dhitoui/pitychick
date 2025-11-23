@@ -1,30 +1,27 @@
 import mysql.connector
 from mysql.connector import Error
 
+# fungsi untuk menyambungkan dengan database
 def create_connection():
-    """
-    Mencoba membuat koneksi ke database MySQL.
-    Aplikasi Anda harus memastikan database 'atm_db' sudah tersedia.
-    """
-    db_config = {
-        "host": "localhost",
-        "user": "root", 
+    db = {
+        "host": "localhost", #alamat database
+        "user": "root", #username database
         "password": "",
-        "database": "atm_db" # Pastikan database ini sudah ada
+        "database": "atm_db" #nama database
     }
     
     conn = None
+    # mencoba membuat koneksi ke database
     try:
-        conn = mysql.connector.connect(**db_config)
+        conn = mysql.connector.connect(db)
         return conn
     except Error as e:
-        # Menampilkan pesan error di console jika koneksi gagal
-        print(f"Error connecting to MySQL: {e}")
+        # jika terjadi error akan mecetak pesan berikut
+        print(f"Error connecting to MySQL: {e}") 
         return None
-
-# Fungsi utilitas untuk memformat saldo dalam format Rupiah
+    
+# membuat tampilan rupiah menjadi Rp 0.000,00
 def format_rupiah(amount):
-    """Memformat float menjadi string format Rupiah (ex: Rp 1.000.000,00)"""
-    # Menggunakan f-string dengan pemisah ribuan koma, lalu mengganti koma desimal
-    formatted = f"Rp {amount:,.2f}".replace(",", "_").replace(".", ",").replace("_", ".")
-    return formatted
+    format = f"Rp {amount:,.2f}".replace(",", "_").replace(".", ",").replace("_", ".")
+    # mengganti koma menjadi underscore sementara, mengganti titik menjadi koma, lalu mengubah underscore sementara menjadi titik
+    return format #mengubah format sebagai
