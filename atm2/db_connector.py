@@ -1,27 +1,25 @@
 import mysql.connector
 from mysql.connector import Error
 
-# fungsi untuk menyambungkan dengan database
 def create_connection():
     db = {
-        "host": "localhost", #alamat database
-        "user": "root", #username database
+        "host": "localhost", 
+        "user": "root", 
         "password": "",
-        "database": "atm_db" #nama database
+        "database": "atm_db" 
     }
     
     conn = None
-    # mencoba membuat koneksi ke database
     try:
-        conn = mysql.connector.connect(db)
+        conn = mysql.connector.connect(**db)
         return conn
     except Error as e:
-        # jika terjadi error akan mecetak pesan berikut
         print(f"Error connecting to MySQL: {e}") 
         return None
     
-# membuat tampilan rupiah menjadi Rp 0.000,00
 def format_rupiah(amount):
-    format = f"Rp {amount:,.2f}".replace(",", "_").replace(".", ",").replace("_", ".")
-    # mengganti koma menjadi underscore sementara, mengganti titik menjadi koma, lalu mengubah underscore sementara menjadi titik
-    return format #mengubah format sebagai
+    format_str = f"{amount:,.2f}"  # 1. Format dasar dengan pemisah ribuan default (koma) dan 2 desimal
+    format_temp = format_str.replace(",", "_") # Ganti koma (pemisah ribuan default) menjadi underscore sementara
+    format_dec = format_temp.replace(".", ",") # 3. Ganti titik (pemisah desimal default) menjadi koma
+    final_format = format_dec.replace("_", ".") # 4. Ganti underscore menjadi titik (pemisah ribuan)
+    return f"Rp {final_format}"
